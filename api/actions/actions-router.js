@@ -4,7 +4,9 @@ const actionsRouter = express.Router();
 const Actions = require("./actions-model")
 
 actionsRouter.get('/', async(req,res)=>{
-    res.send("actions router functional")
+    res.status(200).json({
+        message: "actions router able to return json"
+    })
 })
 
 
