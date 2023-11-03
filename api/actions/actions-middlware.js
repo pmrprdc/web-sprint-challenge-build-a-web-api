@@ -3,11 +3,13 @@
 const Actions = require('./actions-model')
 
 
-async function checkProjectExists(req,res,next) {
+async function checkActionExists(req,res,next) {
+
+
 
 }
 
 
 
 
-module.exports = { checkProjectExists}
+module.exports = { checkActionExists}
