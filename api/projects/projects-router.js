@@ -2,7 +2,7 @@
 const express = require('express')
 const projectsRouter = express.Router();
 const Projects = require('./projects-model')
-
+const {checkProjectExists} = require('./projects-middleware')
 
 
 projectsRouter.get('/', async(req,res)=>{
@@ -18,14 +18,11 @@ projectsRouter.get('/', async(req,res)=>{
 
 
 
-projectsRouter.get('/:id', async(req,res)=>{
+projectsRouter.get('/:id',checkProjectExists, async(req,res)=>{
     try{
         const project = await Projects.get(req.params.id);
-        if(!project){
-          return  res.status(404).json({message: "not FOUND"})
-        }else{
-          return  res.status(201).json(project)
-        }
+         return  res.status(201).json(project)
+        
     }catch(err){
         return res.status(500).json({message: "error!"})
     }
