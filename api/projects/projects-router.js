@@ -45,7 +45,7 @@ projectsRouter.post('/', async(req,res)=>{
 }  
 )
 
-projectsRouter.put('/:id', async (req, res) => {
+projectsRouter.put('/:id',checkProjectExists, async (req, res) => {
     try {
       const { id } = req.params;
       const { completed, name, description } = req.body;
