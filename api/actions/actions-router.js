@@ -1,7 +1,7 @@
 const express = require('express');
 const actionsRouter = express.Router();
 const Actions = require('./actions-model');
-
+const {checkActionExists} = require('./actions-middlware')
 
 actionsRouter.get('/', async(req, res) => {
     const allActions = await Actions.get();
@@ -13,14 +13,10 @@ actionsRouter.get('/', async(req, res) => {
 });
 
 
-actionsRouter.get('/:id', async (req, res) => {
+actionsRouter.get('/:id',checkActionExists, async (req, res) => {
   try {
     const { id } = req.params;
     const action = await Actions.get(id);
-    if (!action) {
-      return res.status(404).json({ message: 'Action not found' });
-    }
-
     res.status(200).json(action);
   } catch (err) {
     console.error('Error getting action:', err);
@@ -47,7 +43,7 @@ actionsRouter.post('/', async (req, res) => {
 });
 
 
-actionsRouter.put('/:id', async (req, res) => {
+actionsRouter.put('/:id',checkActionExists, async (req, res) => {
   try {
     const { id } = req.params;
     const { notes, description, completed, project_id } = req.body;
@@ -58,12 +54,7 @@ actionsRouter.put('/:id', async (req, res) => {
       });
     }
 
-    const action = await Actions.get(id);
-
-    if (!action) {
-      return res.status(404).json({ message: 'Action not found' });
-    }
-
+  
     const updatedAction = await Actions.update(id, req.body);
 
     res.status(200).json(updatedAction);
@@ -73,15 +64,9 @@ actionsRouter.put('/:id', async (req, res) => {
   }
 });
 
-actionsRouter.delete('/:id', async (req, res) => {
+actionsRouter.delete('/:id',checkActionExists, async (req, res) => {
   try {
     const { id } = req.params;
-    const action = await Actions.get(id);
-
-    if (!action) {
-      return res.status(404).json({ message: 'Action not found' });
-    }
-
     await Actions.remove(id);
 
     res.status(204).send(); // 204 No Content for successful deletion
