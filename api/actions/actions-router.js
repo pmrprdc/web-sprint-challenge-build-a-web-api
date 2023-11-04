@@ -2,6 +2,7 @@ const express = require('express');
 const actionsRouter = express.Router();
 const Actions = require('./actions-model');
 
+
 actionsRouter.get('/', async(req, res) => {
     const allActions = await Actions.get();
   try {
@@ -10,5 +11,8 @@ actionsRouter.get('/', async(req, res) => {
     res.status(500).json({ error: 'An error occurred while fetching the actions.' });
   }
 });
+
+
+
 
 module.exports = actionsRouter;
