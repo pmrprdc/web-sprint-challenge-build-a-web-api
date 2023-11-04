@@ -74,13 +74,9 @@ projectsRouter.put('/:id',checkProjectExists, async (req, res) => {
 
 
 
-  projectsRouter.delete('/:id', async (req, res) => {
+  projectsRouter.delete('/:id',checkProjectExists, async (req, res) => {
     try {
       const { id } = req.params;
-      const project = await Projects.get(id);
-      if (!project) {
-        return res.status(404).json({ message: 'Project not found' });
-      }
       await Projects.remove(id);
       return res.json({ message: 'Project deleted successfully' });
     } catch (err) {
