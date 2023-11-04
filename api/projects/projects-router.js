@@ -91,6 +91,31 @@ projectsRouter.put('/:id', async (req, res) => {
       res.status(500).json({ message: 'Something went wrong while trying to delete the project' });
     }
   });
+
+  projectsRouter.get('/:id/actions', async (req, res) => {
+    try {
+      const { id } = req.params;
+      const project = await Projects.get(id);
+  
+      if (!project) {
+        return res.status(404).json({ message: 'Project not found' });
+      }
+  
+      // Assuming that you have a method to get actions associated with the project by ID
+      const actions = await Projects.getProjectActions(id);
+  
+      // Check if there are actions for the project
+      if (actions.length > 0) {
+        return res.status(200).json(actions);
+      } else {
+        return res.status(200).json([]); // Return an empty array if no actions found
+      }
+    } catch (err) {
+      console.error('Error getting project actions:', err);
+      res.status(500).json({ message: 'Something went wrong while trying to fetch project actions' });
+    }
+  });
+  
   
 
 
