@@ -42,28 +42,38 @@ projectsRouter.post('/', async(req,res)=>{
         const newProject = await Projects.insert(req.body);
         return  res.status(201).json(newProject)
     }catch(err){
-        return res.status(500).json({message: "somwthing went wrong!"})
+        return res.status(500).json({message: "something went wrong!"})
 
     }
 }  
 )
 
-projectsRouter.put('/:id', async(req,res)=>{
-    const {name,description,completed} = req.body;
-    if(!name||!description||!completed){
+projectsRouter.put('/:id', async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { completed, name, description } = req.body;
+  
+      // Check if any required fields are missing
+      if (typeof completed !== 'boolean' || !name || !description) {
         return res.status(400).json({
-            message: "Please provide a name and description and completed"
-        })
+          message: 'Please include a valid name, description, and a completed status (boolean).',
+        });
+      }
+  
+     
+  
+      // Update the project
+      const updatedProject = await Projects.update(id, req.body);
+  
+      return res.json(updatedProject);
+    } catch (err) {
+      console.error('Error updating project:', err);
+      return res.status(500).json({
+        message: 'Something went wrong while updating the project.',
+      });
     }
-    try{
-        const updatedProject = await Projects.update(req.params.id,req.body);
-        return  res.status(201).json(updatedProject)
-    }catch(err){
-        return res.status(500).json({message: "somwthing went wrong!"})
-
-    }
-}  
-)
+  });
+  
 
 
 
