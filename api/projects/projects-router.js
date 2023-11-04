@@ -85,15 +85,9 @@ projectsRouter.put('/:id',checkProjectExists, async (req, res) => {
     }
   });
 
-  projectsRouter.get('/:id/actions', async (req, res) => {
+  projectsRouter.get('/:id/actions',checkProjectExists, async (req, res) => {
     try {
       const { id } = req.params;
-      const project = await Projects.get(id);
-  
-      if (!project) {
-        return res.status(404).json({ message: 'Project not found' });
-      }
-  
       // Assuming that you have a method to get actions associated with the project by ID
       const actions = await Projects.getProjectActions(id);
   
