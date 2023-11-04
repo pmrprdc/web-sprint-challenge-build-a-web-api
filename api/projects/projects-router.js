@@ -48,6 +48,23 @@ projectsRouter.post('/', async(req,res)=>{
 }  
 )
 
+projectsRouter.put('/:id', async(req,res)=>{
+    const {name,description,completed} = req.body;
+    if(!name||!description||!completed){
+        return res.status(400).json({
+            message: "Please provide a name and description and completed"
+        })
+    }
+    try{
+        const updatedProject = await Projects.update(req.params.id,req.body);
+        return  res.status(201).json(updatedProject)
+    }catch(err){
+        return res.status(500).json({message: "somwthing went wrong!"})
+
+    }
+}  
+)
+
 
 
 
