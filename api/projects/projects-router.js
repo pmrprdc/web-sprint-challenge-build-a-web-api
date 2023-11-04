@@ -32,11 +32,17 @@ projectsRouter.get('/:id', async(req,res)=>{
 }  )
 
 projectsRouter.post('/', async(req,res)=>{
+    const {description, name} = req.body;
+    if(!name || !description){
+        return res.status(400).json({
+            message: "Please provide a name and description"
+        })
+    }
     try{
         const newProject = await Projects.insert(req.body);
         return  res.status(201).json(newProject)
     }catch(err){
-        return res.status(500).json({message: "error!"})
+        return res.status(500).json({message: "somwthing went wrong!"})
 
     }
 }  
